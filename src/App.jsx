@@ -1,31 +1,29 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
+import {
+  BrowserRouter as Router, Routes, Route, NavLink,
+} from 'react-router-dom';
 import Header from './components/Header.jsx';
 import LandingPage from './components/LandingPage.jsx';
 
 const App = () => (
 
-  <div className="App flex flex-col items-center">
+  <div className="App w-screen flex flex-col items-center">
+    <Router>
+      <div className="w-full mb-6">
+        <nav className="flex justify-evenly text-sky-500">
+          <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/">Home</NavLink>
+          <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/test">Test</NavLink>
+          <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/test2">Test2</NavLink>
+        </nav>
+      </div>
+
+      <Routes>
+        <Route path="/test2" element={<Test2 />} />
+        <Route path="/test" element={<Test />} />
+      </Routes>
+    </Router>
     <Header />
     <LandingPage />
-    <Router>
-      <div className="body">
-        <nav>
-          <Link to="/test" exact>
-            <div>Test</div>
-          </Link>
-          <Link to="/test2" exact>
-            <div>Test2</div>
-          </Link>
-        </nav>
-
-        <Switch>
-          <Route path="/test2"><Test2 /></Route>
-          <Route path="/test"><Test /></Route>
-        </Switch>
-      </div>
-    </Router>
   </div>
 );
 
