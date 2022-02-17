@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import WinLoss from './WinLoss.jsx';
 
 axios.defaults.withCredentials = true;
 const BACKEND_URL = 'http://localhost:3004';
@@ -13,6 +14,22 @@ const LandingPage = ({ auth }) => {
   const [additionalNumber, setAdditionalNumber] = useState('');
   const [prize, setPrize] = useState('');
   const [saveMsg, setSaveMsg] = useState('');
+  const [winLoss, setWinLoss] = useState(0);
+
+  useEffect(() => {
+    if (auth) {
+      (async () => {
+        try {
+          const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
+          const resp = await axios.get(`${BACKEND_URL}/ticket/winloss`, headers);
+          const { win } = resp.data;
+          setWinLoss(win);
+        } catch (err) {
+          console.error(err.response);
+        }
+      })();
+    }
+  }, [auth]);
 
   const handleCheck = (index) => {
     setMessage('');
@@ -59,7 +76,10 @@ const LandingPage = ({ auth }) => {
       };
 
       const resp = await axios.post(`${BACKEND_URL}/bet/save`, data, headers);
-      if (resp.data.bet) setSaveMsg('Successfully saved!');
+      if (resp.data.bet) {
+        setSaveMsg('Successfully saved!');
+        setWinLoss((prev) => prev + Number(resp.data.bet.profit) - 1);
+      }
     } catch (err) {
       console.log(err.response);
       setSaveMsg('An error occured.');
@@ -68,6 +88,8 @@ const LandingPage = ({ auth }) => {
 
   return (
     <>
+      {auth && <WinLoss winLoss={winLoss} />}
+
       <form onSubmit={handleSubmit}>
         <div className="w-1/4 m-auto flex flex-col items-center">
           <span className="block text-indigo-500">Numbers:</span>
