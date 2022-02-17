@@ -2,7 +2,6 @@ import React from 'react';
 import {
   BrowserRouter as Router, Routes, Route, NavLink,
 } from 'react-router-dom';
-import Header from './components/Header.jsx';
 import LandingPage from './components/LandingPage.jsx';
 
 const App = () => (
@@ -18,12 +17,11 @@ const App = () => (
       </div>
 
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/test2" element={<Test2 />} />
         <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
-    <Header />
-    <LandingPage />
   </div>
 );
 
