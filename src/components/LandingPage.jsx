@@ -4,17 +4,19 @@ import axios from 'axios';
 axios.defaults.withCredentials = true;
 const BACKEND_URL = 'http://localhost:3004';
 
-const LandingPage = () => {
+const LandingPage = ({ auth }) => {
   const numbers = [...Array(50).keys()].slice(1);
   const [numbersChecked, setNumbersChecked] = useState(new Array(49).fill(false));
   const [message, setMessage] = useState('');
-  const [selectedNumsOutput, setSelectedNumsOutput] = useState('');
+  const [selectedNums, setSelectedNums] = useState('');
   const [winningNumbers, setWinningNumbers] = useState('');
   const [additionalNumber, setAdditionalNumber] = useState('');
   const [prize, setPrize] = useState('');
+  const [saveMsg, setSaveMsg] = useState('');
 
   const handleCheck = (index) => {
     setMessage('');
+    setSelectedNums('');
     const updatedNumbersChecked = numbersChecked.map((item, i) => {
       if (index !== i) return item;
       if (index === i) {
@@ -29,6 +31,7 @@ const LandingPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSaveMsg('');
     if (numbersChecked.filter((el) => el).length < 6) {
       setMessage('Please select 6 numbers!');
       return;
@@ -38,17 +41,28 @@ const LandingPage = () => {
 
     try {
       const resp = await axios.post(`${BACKEND_URL}/bet/check`, data);
-      setSelectedNumsOutput(resp.data.numbers);
-
-      const info = JSON.parse(resp.data.d);
-      console.log(resp);
-      const winNums = info.WinningNumbers.join(',');
-      const winPrize = info.Prizes.length > 0 ? `You won $${new Intl.NumberFormat('en-US').format(info.Prizes[0].Total)}` : 'You did not win anything :(';
-      setWinningNumbers(winNums);
-      setAdditionalNumber(info.AdditionalNumber);
-      setPrize(winPrize);
+      setSelectedNums(resp.data.numbers);
+      setWinningNumbers(resp.data.winningNumbers);
+      setAdditionalNumber(resp.data.additionalNumber);
+      setPrize(resp.data.prize);
     } catch (err) {
       console.log(err.response);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
+      const data = {
+        numbers: selectedNums,
+        prize,
+      };
+
+      const resp = await axios.post(`${BACKEND_URL}/bet/save`, data, headers);
+      if (resp.data.bet) setSaveMsg('Successfully saved!');
+    } catch (err) {
+      console.log(err.response);
+      setSaveMsg('An error occured.');
     }
   };
 
@@ -70,33 +84,42 @@ const LandingPage = () => {
         </div>
       </form>
 
-      {selectedNumsOutput && (
-      <div className="flex flex-col items-center text-center">
-        <div className="mb-4">
-          <p className="text-xl font-bold text-sky-400">Draw date:</p>
-          <p>Thu, 17 Feb 2022</p>
-        </div>
+      {selectedNums && (
+        <>
+          <div className="flex flex-col items-center text-center">
+            <div className="mb-4">
+              <p className="text-xl font-bold text-sky-400">Draw date:</p>
+              <p>Thu, 17 Feb 2022</p>
+            </div>
 
-        <div className="mb-4">
-          <p className="text-xl font-bold text-sky-400">Your numbers:</p>
-          <p>{selectedNumsOutput}</p>
-        </div>
+            <div className="mb-4">
+              <p className="text-xl font-bold text-sky-400">Your numbers:</p>
+              <p>{selectedNums}</p>
+            </div>
 
-        <div className="mb-4">
-          <p className="text-xl font-bold text-sky-400">Winning numbers:</p>
-          <p>{winningNumbers}</p>
-        </div>
+            <div className="mb-4">
+              <p className="text-xl font-bold text-sky-400">Winning numbers:</p>
+              <p>{winningNumbers}</p>
+            </div>
 
-        <div className="mb-4">
-          <p className="text-xl font-bold text-sky-400">Additional number:</p>
-          <p>{additionalNumber}</p>
-        </div>
+            <div className="mb-4">
+              <p className="text-xl font-bold text-sky-400">Additional number:</p>
+              <p>{additionalNumber}</p>
+            </div>
 
-        <div>
-          <p className="text-xl font-bold text-sky-400">Prize:</p>
-          <p>{prize}</p>
-        </div>
-      </div>
+            <div className="mb-4">
+              <p className="text-xl font-bold text-sky-400">Prize:</p>
+              <p>{prize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(prize)}` : 'You did not win anything'}</p>
+            </div>
+          </div>
+
+          {auth && (
+            <>
+              <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded" onClick={handleSave}>Save</button>
+              <p className="text-green-500 font-bold">{saveMsg}</p>
+            </>
+          )}
+        </>
       )}
 
     </>
