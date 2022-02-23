@@ -9,14 +9,17 @@ const LandingPage = ({ auth }) => {
   const [file, setFile] = useState(null);
   const [errMsg, setErrMsg] = useState('');
   const [disableSubmit, setDisableSubmit] = useState(true);
+  const [disableSave, setDisableSave] = useState(true);
 
   const [drawNum, setDrawNum] = useState(0);
   const [bets, setBets] = useState([]);
   const [winningNumbers, setWinningNumbers] = useState('');
   const [additionalNumber, setAdditionalNumber] = useState('');
-  const [prize, setPrize] = useState([]);
+  const [prizes, setPrizes] = useState([]);
+  const [totalPrize, setTotalPrize] = useState(0);
   const [saveMsg, setSaveMsg] = useState('');
   const [winLoss, setWinLoss] = useState(0);
+  const [filename, setFilename] = useState('');
 
   const fileInputRef = useRef();
 
@@ -84,21 +87,26 @@ const LandingPage = ({ auth }) => {
       setDisableSubmit(true);
       setBets(resp.data.bets);
       setDrawNum(resp.data.draw);
+      setFilename(resp.data.ticket);
       fileInputRef.current.value = null;
+
+      const promises = [];
+      resp.data.bets.forEach((bet) => {
+        promises.push(axios.post(`${BACKEND_URL}/bet/check`, { bet, draw: resp.data.draw }));
+      });
+
+      const results = await Promise.all(promises);
+      const wins = results.map((result) => result.data.prize);
+      const totalWin = results.reduce((acc, cur) => acc + cur.data.prize, 0);
+      setWinningNumbers(results[0].data.winningNumbers);
+      setAdditionalNumber(results[0].data.additionalNumber);
+      setPrizes(wins);
+      setTotalPrize(totalWin);
+      setDisableSave(false);
     } catch (err) {
       console.error(err.response);
       if (err.response.status === 400) setErrMsg(err.response.data.error);
     }
-    // const data = {};
-    // try {
-    //   const resp = await axios.post(`${BACKEND_URL}/bet/check`, data);
-    //   setBets(resp.data.numbers);
-    //   setWinningNumbers(resp.data.winningNumbers);
-    //   setAdditionalNumber(resp.data.additionalNumber);
-    //   setPrize(resp.data.prize);
-    // } catch (err) {
-    //   console.log(err.response);
-    // }
   };
 
   const handleSave = async () => {
@@ -106,13 +114,15 @@ const LandingPage = ({ auth }) => {
       const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
       const data = {
         numbers: bets,
-        prize,
+        prizes,
+        filename,
       };
 
       const resp = await axios.post(`${BACKEND_URL}/bet/save`, data, headers);
-      if (resp.data.bet) {
+      if (resp.data.bets) {
         setSaveMsg('Successfully saved!');
-        setWinLoss((prev) => prev + Number(resp.data.bet.profit) - 1);
+        setWinLoss((prev) => prev + resp.data.winLoss);
+        setDisableSave(true);
       }
     } catch (err) {
       console.log(err.response);
@@ -139,12 +149,28 @@ const LandingPage = ({ auth }) => {
           <div className="flex flex-col items-center text-center">
             <div className="mb-4">
               <p className="text-xl font-bold text-sky-400">Draw date:</p>
-              <p>Thu, 17 Feb 2022</p>
+              <p>{drawNum}</p>
             </div>
 
             <div className="mb-4">
               <p className="text-xl font-bold text-sky-400">Your numbers:</p>
-              <p>{bets}</p>
+              {bets.map((bet, i) => (
+                <div>
+                  <span>
+                    {i + 1}
+                    .
+                    {' '}
+                    {bet}
+                    {' '}
+                    -
+                    {' '}
+                  </span>
+                  <span className={`font-bold ${prizes[i] > 0 && 'text-green-500'}`}>
+                    +$
+                    {new Intl.NumberFormat('en-US').format(prizes[i])}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="mb-4">
@@ -157,15 +183,15 @@ const LandingPage = ({ auth }) => {
               <p>{additionalNumber}</p>
             </div>
 
-            <div className="mb-4">
-              <p className="text-xl font-bold text-sky-400">Prize:</p>
-              <p>{prize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(prize)}` : 'You did not win anything'}</p>
+            <div className="mb-4 font-bold text-xl">
+              <p className="text-sky-400">Prize:</p>
+              <p>{totalPrize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(totalPrize)}!` : 'You did not win anything'}</p>
             </div>
           </div>
 
           {auth && (
             <>
-              <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded" onClick={handleSave}>Save</button>
+              <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded disabled:opacity-50" onClick={handleSave} disabled={disableSave}>Save</button>
               <p className="text-green-500 font-bold">{saveMsg}</p>
             </>
           )}

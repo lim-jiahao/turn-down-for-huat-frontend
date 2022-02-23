@@ -6,7 +6,7 @@ const WinLoss = ({ winLoss }) => (
     {' '}
     <span className={winLoss > 0 ? 'text-green-500 font-bold' : 'text-red-500 font-bold'}>
       $
-      {winLoss}
+      {Intl.NumberFormat('en-US').format(winLoss)}
     </span>
   </div>
 );
