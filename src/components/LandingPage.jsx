@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import WinLoss from './WinLoss.jsx';
 
@@ -6,15 +6,22 @@ axios.defaults.withCredentials = true;
 const BACKEND_URL = 'http://localhost:3004';
 
 const LandingPage = ({ auth }) => {
-  const numbers = [...Array(50).keys()].slice(1);
-  const [numbersChecked, setNumbersChecked] = useState(new Array(49).fill(false));
-  const [message, setMessage] = useState('');
-  const [selectedNums, setSelectedNums] = useState('');
+  const [file, setFile] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
+  const [disableSubmit, setDisableSubmit] = useState(true);
+  const [disableSave, setDisableSave] = useState(true);
+
+  const [drawNum, setDrawNum] = useState(0);
+  const [bets, setBets] = useState([]);
   const [winningNumbers, setWinningNumbers] = useState('');
   const [additionalNumber, setAdditionalNumber] = useState('');
-  const [prize, setPrize] = useState('');
+  const [prizes, setPrizes] = useState([]);
+  const [totalPrize, setTotalPrize] = useState(0);
   const [saveMsg, setSaveMsg] = useState('');
   const [winLoss, setWinLoss] = useState(0);
+  const [filename, setFilename] = useState('');
+
+  const fileInputRef = useRef();
 
   useEffect(() => {
     if (auth) {
@@ -31,39 +38,74 @@ const LandingPage = ({ auth }) => {
     }
   }, [auth]);
 
-  const handleCheck = (index) => {
-    setMessage('');
-    setSelectedNums('');
-    const updatedNumbersChecked = numbersChecked.map((item, i) => {
-      if (index !== i) return item;
-      if (index === i) {
-        const totalChecked = numbersChecked.filter((el) => el).length;
-        if (item || (!item && totalChecked < 6)) return !item;
-      }
-      setMessage('You can only select 6 numbers!');
-      return item;
-    });
-    setNumbersChecked(updatedNumbersChecked);
+  const checkType = (curFile) => ['image/png', 'image/jpeg', 'image/gif'].some((type) => curFile.type === type);
+
+  // approx 2MB, if they got meme larger then wtf no
+  const checkFileSize = (curFile) => curFile.size <= 2097152;
+
+  const handleFileChange = (e) => {
+    const curFile = e.target.files[0];
+
+    if (!curFile) {
+      setErrMsg('');
+      setFile(null);
+      setDisableSubmit(true);
+      return;
+    }
+
+    const isValidType = checkType(curFile);
+    const isValidFileSize = checkFileSize(curFile);
+
+    if (!isValidType || !isValidFileSize) {
+      if (!isValidType) setErrMsg('Invalid file type!');
+      else setErrMsg('Image too big. Max file size is 2MB.');
+
+      setFile(null);
+      setDisableSubmit(true);
+      return;
+    }
+    setFile(curFile);
+    setErrMsg('');
+    setDisableSubmit(false);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaveMsg('');
-    if (numbersChecked.filter((el) => el).length < 6) {
-      setMessage('Please select 6 numbers!');
-      return;
-    }
-
-    const data = { numbersChecked };
 
     try {
-      const resp = await axios.post(`${BACKEND_URL}/bet/check`, data);
-      setSelectedNums(resp.data.numbers);
-      setWinningNumbers(resp.data.winningNumbers);
-      setAdditionalNumber(resp.data.additionalNumber);
-      setPrize(resp.data.prize);
+      const config = {
+        headers: {
+          'content-type': 'multipart/form-data',
+        },
+      };
+      const formData = new FormData();
+      formData.append('ticket', file);
+      const resp = await axios.post(`${BACKEND_URL}/vision`, formData, config);
+
+      console.log(resp);
+      setDisableSubmit(true);
+      setBets(resp.data.bets);
+      setDrawNum(resp.data.draw);
+      setFilename(resp.data.ticket);
+      fileInputRef.current.value = null;
+
+      const promises = [];
+      resp.data.bets.forEach((bet) => {
+        promises.push(axios.post(`${BACKEND_URL}/bet/check`, { bet, draw: resp.data.draw }));
+      });
+
+      const results = await Promise.all(promises);
+      const wins = results.map((result) => result.data.prize);
+      const totalWin = results.reduce((acc, cur) => acc + cur.data.prize, 0);
+      setWinningNumbers(results[0].data.winningNumbers);
+      setAdditionalNumber(results[0].data.additionalNumber);
+      setPrizes(wins);
+      setTotalPrize(totalWin);
+      setDisableSave(false);
     } catch (err) {
-      console.log(err.response);
+      console.error(err.response);
+      if (err.response.status === 400) setErrMsg(err.response.data.error);
     }
   };
 
@@ -71,14 +113,16 @@ const LandingPage = ({ auth }) => {
     try {
       const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
       const data = {
-        numbers: selectedNums,
-        prize,
+        numbers: bets,
+        prizes,
+        filename,
       };
 
       const resp = await axios.post(`${BACKEND_URL}/bet/save`, data, headers);
-      if (resp.data.bet) {
+      if (resp.data.bets) {
         setSaveMsg('Successfully saved!');
-        setWinLoss((prev) => prev + Number(resp.data.bet.profit) - 1);
+        setWinLoss((prev) => prev + resp.data.winLoss);
+        setDisableSave(true);
       }
     } catch (err) {
       console.log(err.response);
@@ -91,32 +135,42 @@ const LandingPage = ({ auth }) => {
       {auth && <WinLoss winLoss={winLoss} />}
 
       <form onSubmit={handleSubmit}>
-        <div className="w-1/4 m-auto flex flex-col items-center">
-          <span className="block text-indigo-500">Numbers:</span>
-          <div>
-            {numbers.map((number, index) => (
-              <label htmlFor={number} className="mr-2">
-                <input className="mb-4 mr-1" type="checkbox" value={number} checked={numbersChecked[index]} onChange={() => handleCheck(index)} />
-                {number}
-              </label>
-            ))}
-          </div>
-          <input className="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded" type="submit" value="Check Winnings" />
-          <span className="text-red-500 font-bold">{message}</span>
+        <div className="w-3/4 m-auto flex flex-col items-center">
+          <span className="block text-indigo-500">Upload ticket:</span>
+          <input type="file" ref={fileInputRef} onChange={handleFileChange} />
+          {file && <img className="w-2/5" src={URL.createObjectURL(file)} alt=" preview" /> }
+          <button className="w-36 mx-auto bg-indigo-700 hover:bg-pink-700 disabled:opacity-50 mt-4 text-white font-bold py-2 px-4 rounded-full" type="submit" value="Upload" disabled={disableSubmit}>Upload</button>
+          <span className="text-red-500 font-bold">{errMsg}</span>
         </div>
       </form>
 
-      {selectedNums && (
+      {bets.length > 0 && (
         <>
           <div className="flex flex-col items-center text-center">
             <div className="mb-4">
               <p className="text-xl font-bold text-sky-400">Draw date:</p>
-              <p>Thu, 17 Feb 2022</p>
+              <p>{drawNum}</p>
             </div>
 
             <div className="mb-4">
               <p className="text-xl font-bold text-sky-400">Your numbers:</p>
-              <p>{selectedNums}</p>
+              {bets.map((bet, i) => (
+                <div>
+                  <span>
+                    {i + 1}
+                    .
+                    {' '}
+                    {bet}
+                    {' '}
+                    -
+                    {' '}
+                  </span>
+                  <span className={`font-bold ${prizes[i] > 0 && 'text-green-500'}`}>
+                    +$
+                    {new Intl.NumberFormat('en-US').format(prizes[i])}
+                  </span>
+                </div>
+              ))}
             </div>
 
             <div className="mb-4">
@@ -129,15 +183,15 @@ const LandingPage = ({ auth }) => {
               <p>{additionalNumber}</p>
             </div>
 
-            <div className="mb-4">
-              <p className="text-xl font-bold text-sky-400">Prize:</p>
-              <p>{prize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(prize)}` : 'You did not win anything'}</p>
+            <div className="mb-4 font-bold text-xl">
+              <p className="text-sky-400">Prize:</p>
+              <p>{totalPrize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(totalPrize)}!` : 'You did not win anything'}</p>
             </div>
           </div>
 
           {auth && (
             <>
-              <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded" onClick={handleSave}>Save</button>
+              <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded disabled:opacity-50" onClick={handleSave} disabled={disableSave}>Save</button>
               <p className="text-green-500 font-bold">{saveMsg}</p>
             </>
           )}
