@@ -7,8 +7,8 @@ const ResultsOutput = ({
 }) => {
   const { store, dispatch } = useContext(TotoContext);
   const {
-    bets, drawNum, prizes, winningNumbers, additionalNumber,
-    totalPrize, filename, winLoss,
+    bets, prizes, winningNumbers, additionalNumber,
+    totalPrize, filename, winLoss, date,
   } = store;
 
   const handleSave = async () => {
@@ -37,7 +37,7 @@ const ResultsOutput = ({
     <div className="flex flex-col items-center text-center">
       <div className="mb-4">
         <p className="text-xl font-bold text-sky-400">Draw date:</p>
-        <p>{drawNum}</p>
+        <p>{date}</p>
       </div>
 
       <div className="mb-4">

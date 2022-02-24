@@ -1,8 +1,9 @@
 import React, { useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import {
-  TotoContext, setAddNumberAction, setBetsAction, setDrawNumAction,
-  setPrizesAction, setTotalPrizeAction, setWinNumbersAction, setFilenameAction, BACKEND_URL,
+  TotoContext, setAddNumberAction, setBetsAction,
+  setPrizesAction, setTotalPrizeAction, setWinNumbersAction,
+  setFilenameAction, setDateAction, BACKEND_URL,
 } from '../store.jsx';
 import ImageInput from './ImageInput.jsx';
 
@@ -32,8 +33,8 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
       console.log(resp);
       setDisableSubmit(true);
       dispatch(setBetsAction(resp.data.bets));
-      dispatch(setDrawNumAction(resp.data.draw));
       dispatch(setFilenameAction(resp.data.ticket));
+      dispatch(setDateAction(resp.data.date));
       fileInputRef.current.value = null;
 
       const promises = [];
