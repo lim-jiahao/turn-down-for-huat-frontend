@@ -30,11 +30,7 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
       formData.append('ticket', file);
       const resp = await axios.post(`${BACKEND_URL}/vision`, formData, config);
 
-      console.log(resp);
       setDisableSubmit(true);
-      dispatch(setBetsAction(resp.data.bets));
-      dispatch(setFilenameAction(resp.data.ticket));
-      dispatch(setDateAction(resp.data.date));
       fileInputRef.current.value = null;
 
       const promises = [];
@@ -43,6 +39,11 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
       });
 
       const results = await Promise.all(promises);
+
+      dispatch(setBetsAction(resp.data.bets));
+      dispatch(setFilenameAction(resp.data.ticket));
+      dispatch(setDateAction(resp.data.date));
+
       const wins = results.map((result) => result.data.prize);
       const totalWin = results.reduce((acc, cur) => acc + cur.data.prize, 0);
       dispatch(setWinNumbersAction(results[0].data.winningNumbers));
