@@ -2,12 +2,9 @@ import React, { useContext, useRef, useState } from 'react';
 import axios from 'axios';
 import {
   TotoContext, setAddNumberAction, setBetsAction, setDrawNumAction,
-  setPrizesAction, setTotalPrizeAction, setWinNumbersAction, setFilenameAction,
+  setPrizesAction, setTotalPrizeAction, setWinNumbersAction, setFilenameAction, BACKEND_URL,
 } from '../store.jsx';
 import ImageInput from './ImageInput.jsx';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
 
 const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
   const { store, dispatch } = useContext(TotoContext);

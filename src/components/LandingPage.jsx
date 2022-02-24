@@ -2,13 +2,10 @@ import React, {
   useState, useEffect, useContext,
 } from 'react';
 import axios from 'axios';
-import { setWinLossAction, TotoContext } from '../store.jsx';
+import { setWinLossAction, TotoContext, BACKEND_URL } from '../store.jsx';
 import WinLoss from './WinLoss.jsx';
 import TicketUpload from './TicketUpload.jsx';
 import ResultsOutput from './ResultsOutput.jsx';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
 
 const LandingPage = ({ auth }) => {
   const { dispatch } = useContext(TotoContext);

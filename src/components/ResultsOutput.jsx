@@ -1,9 +1,6 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
-import { TotoContext, setWinLossAction } from '../store.jsx';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
+import { TotoContext, setWinLossAction, BACKEND_URL } from '../store.jsx';
 
 const ResultsOutput = ({
   auth, disableSave, saveMsg, setDisableSave, setSaveMsg,
