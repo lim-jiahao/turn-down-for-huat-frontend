@@ -1,24 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState, useEffect, useRef, useContext,
+} from 'react';
 import axios from 'axios';
+import {
+  setBetsAction, setDrawNumAction, setPrizesAction, setTotalPrizeAction,
+  setWinLossAction, setWinNumbersAction, setAddNumberAction, TotoContext,
+} from '../store.jsx';
 import WinLoss from './WinLoss.jsx';
 
 axios.defaults.withCredentials = true;
 const BACKEND_URL = 'http://localhost:3004';
 
 const LandingPage = ({ auth }) => {
+  const { store, dispatch } = useContext(TotoContext);
+  const {
+    drawNum, bets, winningNumbers, additionalNumber, prizes, totalPrize, winLoss,
+  } = store;
+
   const [file, setFile] = useState(null);
   const [errMsg, setErrMsg] = useState('');
   const [disableSubmit, setDisableSubmit] = useState(true);
   const [disableSave, setDisableSave] = useState(true);
 
-  const [drawNum, setDrawNum] = useState(0);
-  const [bets, setBets] = useState([]);
-  const [winningNumbers, setWinningNumbers] = useState('');
-  const [additionalNumber, setAdditionalNumber] = useState('');
-  const [prizes, setPrizes] = useState([]);
-  const [totalPrize, setTotalPrize] = useState(0);
   const [saveMsg, setSaveMsg] = useState('');
-  const [winLoss, setWinLoss] = useState(0);
   const [filename, setFilename] = useState('');
 
   const fileInputRef = useRef();
@@ -30,7 +34,7 @@ const LandingPage = ({ auth }) => {
           const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
           const resp = await axios.get(`${BACKEND_URL}/ticket/winloss`, headers);
           const { win } = resp.data;
-          setWinLoss(win);
+          dispatch(setWinLossAction(win));
         } catch (err) {
           console.error(err.response);
         }
@@ -40,7 +44,6 @@ const LandingPage = ({ auth }) => {
 
   const checkType = (curFile) => ['image/png', 'image/jpeg', 'image/gif'].some((type) => curFile.type === type);
 
-  // approx 2MB, if they got meme larger then wtf no
   const checkFileSize = (curFile) => curFile.size <= 2097152;
 
   const handleFileChange = (e) => {
@@ -85,8 +88,8 @@ const LandingPage = ({ auth }) => {
 
       console.log(resp);
       setDisableSubmit(true);
-      setBets(resp.data.bets);
-      setDrawNum(resp.data.draw);
+      dispatch(setBetsAction(resp.data.bets));
+      dispatch(setDrawNumAction(resp.data.draw));
       setFilename(resp.data.ticket);
       fileInputRef.current.value = null;
 
@@ -98,10 +101,10 @@ const LandingPage = ({ auth }) => {
       const results = await Promise.all(promises);
       const wins = results.map((result) => result.data.prize);
       const totalWin = results.reduce((acc, cur) => acc + cur.data.prize, 0);
-      setWinningNumbers(results[0].data.winningNumbers);
-      setAdditionalNumber(results[0].data.additionalNumber);
-      setPrizes(wins);
-      setTotalPrize(totalWin);
+      dispatch(setWinNumbersAction(results[0].data.winningNumbers));
+      dispatch(setAddNumberAction(results[0].data.additionalNumber));
+      dispatch(setPrizesAction(wins));
+      dispatch(setTotalPrizeAction(totalWin));
       setDisableSave(false);
     } catch (err) {
       console.error(err.response);
@@ -120,8 +123,8 @@ const LandingPage = ({ auth }) => {
 
       const resp = await axios.post(`${BACKEND_URL}/bet/save`, data, headers);
       if (resp.data.bets) {
+        dispatch(setWinLossAction(winLoss + resp.data.winLoss));
         setSaveMsg('Successfully saved!');
-        setWinLoss((prev) => prev + resp.data.winLoss);
         setDisableSave(true);
       }
     } catch (err) {
