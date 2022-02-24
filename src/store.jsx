@@ -7,6 +7,8 @@ const SET_WINNING_NUMBERS = 'SET_WINNING_NUMBERS';
 const SET_ADDITIONAL_NUMBER = 'SET_ADDITIONAL_NUMBER';
 const SET_PRIZES = 'SET_PRIZES';
 const SET_TOTAL_PRIZE = 'SET_TOTAL_PRIZE';
+const SET_FILE = 'SET_FILE';
+const SET_FILE_NAME = 'SET_FILE_NAME';
 
 export const initialState = {
   drawNum: 0,
@@ -16,6 +18,8 @@ export const initialState = {
   prizes: [],
   totalPrize: 0,
   winLoss: 0,
+  file: null,
+  filename: '',
 };
 
 export const totoReducer = (state, action) => {
@@ -34,6 +38,10 @@ export const totoReducer = (state, action) => {
       return { ...state, prizes: action.payload.prizes };
     case SET_TOTAL_PRIZE:
       return { ...state, totalPrize: action.payload.prize };
+    case SET_FILE:
+      return { ...state, file: action.payload.file };
+    case SET_FILE_NAME:
+      return { ...state, filename: action.payload.filename };
     default:
       return state;
   }
@@ -72,6 +80,16 @@ export const setPrizesAction = (prizes) => ({
 export const setTotalPrizeAction = (prize) => ({
   type: SET_TOTAL_PRIZE,
   payload: { prize },
+});
+
+export const setFileAction = (file) => ({
+  type: SET_FILE,
+  payload: { file },
+});
+
+export const setFilenameAction = (filename) => ({
+  type: SET_FILE_NAME,
+  payload: { filename },
 });
 
 export const TotoContext = React.createContext(null);

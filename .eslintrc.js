@@ -44,5 +44,6 @@ module.exports = {
     // TODO: Fix the no shadow warning in starter code so we can treat it as an error.
     'no-shadow': 'warn',
     'react/function-component-definition': 'off',
+    'react/jsx-one-expression-per-line': 'off',
   },
 };
