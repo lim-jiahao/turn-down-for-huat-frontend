@@ -1,9 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
+import { BACKEND_URL } from '../store.jsx';
 import Logout from './Logout.jsx';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
 
 const Profile = ({ setAuth }) => {
   useEffect(() => {
