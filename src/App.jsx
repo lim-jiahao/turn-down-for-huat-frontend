@@ -7,6 +7,7 @@ import LandingPage from './components/LandingPage.jsx';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import Profile from './components/Profile.jsx';
+import Palette from './components/Palette.jsx';
 
 axios.defaults.withCredentials = true;
 const BACKEND_URL = 'http://localhost:3004';
@@ -38,16 +39,18 @@ const App = () => {
   });
 
   return (
-    <div className="w-screen flex flex-col items-center">
+    <div className="w-screen h-screen flex flex-col items-center bg-huat-40">
       <Router>
-        <div className="w-full mb-6">
-          <nav className="flex justify-evenly text-sky-500">
+        <div className="w-full mb-6 p-10 border-2 bg-gradient-to-br from-huat-30 to-huat-70 via huat-60 animate-gradient-xy">
+          <nav className="flex justify-evenly text-huat-90 text-xl">
             <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/">Home</NavLink>
+            <h2 className="text-4xl">Turn Down For HUAT</h2>
             {auth ? (
               <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/profile">Profile</NavLink>
             ) : (
               <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/login">Log In</NavLink>
             )}
+            <NavLink to="/palette">Palette</NavLink>
           </nav>
         </div>
 
@@ -56,6 +59,7 @@ const App = () => {
           <Route path="profile" element={auth ? <Profile setAuth={setAuth} /> : <LandingPage auth={auth} />} />
           <Route path="login" element={<Login setAuth={setAuth} />} />
           <Route path="signup" element={<Signup setAuth={setAuth} />} />
+          <Route path="palette" element={<Palette />} />
         </Routes>
       </Router>
     </div>
