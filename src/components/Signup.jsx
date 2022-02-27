@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
+import { BACKEND_URL } from '../store.jsx';
 
 const Signup = ({ setAuth }) => {
   const [username, setUsername] = useState('');
