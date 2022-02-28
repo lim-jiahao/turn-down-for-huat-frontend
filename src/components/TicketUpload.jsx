@@ -67,7 +67,7 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
           inputRef={fileInputRef}
         />
 
-        <button className="w-36 mx-auto bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" type="submit" value="Upload" disabled={disableSubmit}>Upload</button>
+        <button className="w-full mx-auto bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" type="submit" value="Upload" disabled={disableSubmit}>Upload</button>
         <span className="text-red-500 font-bold">{errMsg}</span>
       </div>
     </form>

@@ -31,7 +31,7 @@ const LandingPage = ({ auth }) => {
   return (
     <>
       {auth && <WinLoss />}
-      <div className="w-10/12 border-double border-4 border-huat-10 bg-huat-30 p-12 flex flex-column justify-around items-center">
+      <div className="w-10/12 border-double border-4 border-huat-10 rounded-lg bg-huat-30 p-12 flex flex-column justify-around items-center">
         <TicketUpload setDisableSave={setDisableSave} setSaveMsg={setSaveMsg} />
         <ResultsOutput
           auth={auth}
