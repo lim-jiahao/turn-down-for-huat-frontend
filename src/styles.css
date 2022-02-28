@@ -1,0 +1,39 @@
+.scrollbar::-webkit-scrollbar {
+  width: 12px;
+  height: 20px;
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #f7f4ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #e0cbcb;
+  border-radius: 100vh;
+  border: 3px solid #f6f7ed;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #c0a0b9;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 120px;
+}
+.modal {
+  margin: 30px auto;
+  padding: 30px;
+  background-color: lightgray;
+  width: 50%;
+  height: 50vh;
+  position: relative;
+}
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
