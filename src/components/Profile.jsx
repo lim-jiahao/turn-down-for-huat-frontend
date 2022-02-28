@@ -7,6 +7,7 @@ import TicketsTable from './TicketsTable.jsx';
 
 const Profile = ({ setAuth }) => {
   const [curUser, setCurUser] = useState({});
+  const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -37,7 +38,8 @@ const Profile = ({ setAuth }) => {
         const headers = { headers: { Authorization: `Bearer ${localStorage.getItem('authToken')}` } };
 
         const resp = await axios.get(`${BACKEND_URL}/user/self`, headers);
-        setCurUser(resp.data);
+        setCurUser(resp.data.user);
+        setTickets(resp.data.tickets);
         console.log(resp);
       } catch (err) {
         console.error(err.response);
@@ -47,20 +49,20 @@ const Profile = ({ setAuth }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center">
-        <div className="text-black mb-3 text-center">
+      <div className="flex items-start">
+        <div className="text-black mb-3 text-center mr-2">
           <div className="mb-1">
             Logged in as
             <div className="flex items-center justify-center">
               <UserIcon className="h-5 w-5 mr-1" />
-              <p className="font-bold text-lg">{curUser.user?.name}</p>
+              <p className="font-bold text-lg">{curUser.name}</p>
             </div>
           </div>
         </div>
-
         <Logout setAuth={setAuth} />
+
       </div>
-      <TicketsTable tickets={curUser.tickets} />
+      <TicketsTable tickets={tickets} setTickets={setTickets} />
     </>
   );
 };
