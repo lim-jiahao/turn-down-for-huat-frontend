@@ -27,43 +27,44 @@ const TicketsTable = ({ tickets, setTickets }) => {
 
   return (
     <>
-      <p className="font-bold text-xl mb-2">Your tickets:</p>
+      <div className="w-9/12 mt-4 border-t border-gray-400" />
+      <p className="mt-4 mb-4 font-bold text-3xl text-huat-90 mb-2">Your tickets:</p>
       {tickets.length > 0 ? (
         <div className="w-auto h-1/2 pr-2 overflow-auto scrollbar">
-          <table className="table-auto border-collapsed border border-slate-500">
+          <table className="table-auto border-collapsed bg-huat-50 border-4 border-huat-70">
             <thead>
               <tr>
-                <th className="border border-slate-600 p-4">Ticket</th>
-                <th className="border border-slate-600 p-4">Bets</th>
-                <th className="border border-slate-600 p-4">Profit</th>
-                <th className="border border-slate-600 p-4">Cost</th>
-                <th className="border border-slate-600 p-4">Created</th>
-                <th className="border border-slate-600 p-4">Delete</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Ticket</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Bets</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Profit</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Cost</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Created</th>
+                <th className="border border-huat-80 p-4 text-huat-90">Delete</th>
               </tr>
             </thead>
             <tbody>
               {tickets?.map((ticket) => (
                 <tr className="text-center">
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4">
                     <div onClick={() => handleImageClick(ticket.filename)} onKeyPress={() => handleImageClick(ticket.filename)} tabIndex={0} role="button">
                       <img width={100} src={`${BACKEND_URL}/${ticket.filename}`} className="hover:cursor-pointer" alt="ticket" />
                     </div>
                   </td>
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4 text-huat-90">
                     {ticket.bets.map((bet, i) => (
                       <p>{i + 1}. {bet}</p>
                     ))}
                   </td>
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4 text-huat-90">
                     ${Intl.NumberFormat('en-US').format(ticket.profit)}
                   </td>
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4 text-huat-90">
                     ${ticket.cost}
                   </td>
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4 text-huat-90">
                     {ticket.created}
                   </td>
-                  <td className="border border-slate-600 p-4">
+                  <td className="border border-huat-80 p-4 text-huat-90">
                     <TrashIcon onClick={() => handleDelete(ticket.filename)} className="h-5 w-5 cursor-pointer hover:scale-150" />
                   </td>
                 </tr>

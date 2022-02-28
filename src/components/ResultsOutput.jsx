@@ -68,7 +68,7 @@ const ResultsOutput = ({
       {auth && (
       <div>
         <button type="button" className="w-full mx-auto bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" onClick={handleSave} disabled={disableSave}>Save</button>
-        <p className="text-green-500 font-bold">{saveMsg}</p>
+        <p className="text-huat-10 font-bold">{saveMsg}</p>
       </div>
       )}
     </div>

@@ -37,3 +37,15 @@
   top: 5px;
   right: 5px;
 }
+
+.title-huat {
+  animation-name: change-colour;
+  animation-duration: 7s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes change-colour {
+  50% {
+    color: crimson;
+  }
+}

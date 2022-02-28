@@ -7,7 +7,7 @@
 --maximum-yellow-red: #fcc878ff;
 --copper-red: #c5603aff;
 --upsdell-red: #b82b2fff;
---persian-plum: #5f1717ff;
+--persian-plum: #5f1717;
 --persian-red: #ca3a32ff;
 --cedar-chest: #d35837ff;
 --mandarin: #de7442ff;
@@ -25,7 +25,9 @@
 --burlywood: hsla(32, 61%, 70%, 1);
 --unbleached-silk: hsla(25, 90%, 88%, 1);
 }
-
+.random {
+  background-color: #7a46bed7;
+}
 .palette-box {
   padding: 50px;
 }

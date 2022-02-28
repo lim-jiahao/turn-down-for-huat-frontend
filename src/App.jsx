@@ -41,16 +41,15 @@ const App = () => {
   return (
     <div className="w-screen h-screen flex flex-col items-center bg-huat-40">
       <Router>
-        <div className="w-full mb-6 p-10 bg-gradient-to-br from-huat-30 to-huat-70 via huat-60 animate-gradient-xy">
-          <nav className="flex justify-evenly text-huat-90 text-xl">
+        <div className="w-full mb-6 p-4 bg-gradient-to-br from-huat-30 to-huat-70 via-huat-60 animate-gradient-xy">
+          <nav className="flex justify-evenly items-center text-huat-90 text-xl">
             <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/">Home</NavLink>
-            <h2 className="text-4xl">Turn Down For HUAT</h2>
+            <h2 className="text-6xl font-['Permanent_Marker']">Turn Down For <span className="title-huat">HUAT</span></h2>
             {auth ? (
               <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/profile">Profile</NavLink>
             ) : (
               <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/login">Log In</NavLink>
             )}
-            <NavLink to="/palette">Palette</NavLink>
           </nav>
         </div>
 

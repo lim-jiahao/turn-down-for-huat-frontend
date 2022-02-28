@@ -13,6 +13,7 @@ module.exports = {
           70: '#de7442ff',
           80: '#e1b482ff',
           90: '#fcdbc3ff',
+          100: '#7a46bed7',
         },
       },
       'animation': {
