@@ -3,7 +3,7 @@ import axios from 'axios';
 import {
   TotoContext, setAddNumberAction, setBetsAction,
   setPrizesAction, setTotalPrizeAction, setWinNumbersAction,
-  setFilenameAction, setDateAction, BACKEND_URL,
+  setFilenameAction, setDateAction, BACKEND_URL, resetStateAction,
 } from '../store.jsx';
 import ImageInput from './ImageInput.jsx';
 
@@ -52,6 +52,7 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
       dispatch(setTotalPrizeAction(totalWin));
       setDisableSave(false);
     } catch (err) {
+      dispatch(resetStateAction());
       console.error(err.response);
       if (err.response.status === 400) setErrMsg(err.response.data.error);
     }
