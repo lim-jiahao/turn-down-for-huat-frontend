@@ -36,10 +36,11 @@ const ImageInput = ({ setErrMsg, setDisableSubmit, inputRef }) => {
   };
   return (
     <>
-      <input type="file" ref={inputRef} onChange={handleFileChange} />
+      <span className="form-label block text-huat-10 text-4xl m-4">Upload ticket:</span>
+      <input type="file" className="m-4 form-control block w-full text-sm text-gray-900 bg-gray-50 rounded-2xl border border-solid border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" ref={inputRef} onChange={handleFileChange} />
       {file && (
       <img
-        className="w-2/5"
+        className="w-3/5 m-4"
         src={URL.createObjectURL(file)}
         alt="
       preview"

@@ -2,6 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+.palette {
+  /* CSS HEX */
+--maximum-yellow-red: #fcc878ff;
+--copper-red: #c5603aff;
+--upsdell-red: #b82b2fff;
+--persian-plum: #5f1717ff;
+--persian-red: #ca3a32ff;
+--cedar-chest: #d35837ff;
+--mandarin: #de7442ff;
+--burlywood: #e1b482ff;
+--unbleached-silk: #fcdbc3ff;
+
+/* CSS HSL */
+--maximum-yellow-red: hsla(36, 96%, 73%, 1);
+--copper-red: hsla(16, 55%, 50%, 1);
+--upsdell-red: hsla(358, 62%, 45%, 1);
+--persian-plum: hsla(0, 61%, 23%, 1);
+--persian-red: hsla(3, 60%, 49%, 1);
+--cedar-chest: hsla(13, 64%, 52%, 1);
+--mandarin: hsla(19, 70%, 56%, 1);
+--burlywood: hsla(32, 61%, 70%, 1);
+--unbleached-silk: hsla(25, 90%, 88%, 1);
+}
+
+.palette-box {
+  padding: 50px;
+}
+.box-1 {
+  padding: 20px;
+  background-color: #fcc878ff;
+}
+.box-2 {
+  padding: 20px;
+  background-color: #c5603aff;
+}
+.box-3 {
+  padding: 20px;
+  background-color: #b82b2fff;
+}
+.box-4 {
+  padding: 20px;
+  background-color: #5f1717ff;
+}
+.box-5 {
+  padding: 20px;
+  background-color: #ca3a32ff;
+}
+.box-6 {
+  padding: 20px;
+  background-color: #d35837ff;
+}
+.box-7 {
+  padding: 20px;
+  background-color: #de7442ff;
+}
+.box-8 {
+  padding: 20px;
+  background-color: #e1b482ff;
+}
+.box-9 {
+  padding: 20px;
+  background-color: #fcdbc3ff;
+}
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -15,3 +80,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* input[type=file]::-webkit-file-upload-button,
+input[type=file]::file-selector-button {
+  @apply text-white bg-grey-7000 hover: bg-grey-600 font-medium text-sm cursor-pointer border-0 py-2.5 pl-8 p r-4;
+  margin-inline-start: -1rem;
+  margin-inline-end: 1rem;
+} */

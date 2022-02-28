@@ -6,10 +6,10 @@ const WinLoss = () => {
   const { winLoss } = store;
 
   return (
-    <div className="mb-3">
-      Your net win/loss is
+    <div className="mb-3 p-5">
+      <span className="text-2xl text-huat-90">Your net win/loss is:</span>
       {' '}
-      <span className={winLoss > 0 ? 'text-green-500 font-bold' : 'text-red-500 font-bold'}>
+      <span className={winLoss > 0 ? 'text-green-500 font-bold text-6xl' : 'text-red-500 font-bold'}>
         $
         {Intl.NumberFormat('en-US').format(winLoss)}
       </span>
