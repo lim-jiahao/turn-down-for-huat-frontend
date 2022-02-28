@@ -33,19 +33,18 @@ const ResultsOutput = ({
   };
 
   return bets.length > 0 && (
-  <>
-    <div className="mt-4 w-2/5 flex flex-col items-center text-center">
+    <div className="w-2/5 flex flex-col items-center text-center">
       <div className="mb-4">
-        <p className="text-xl font-bold text-huat-90">Draw date:</p>
-        <p>{date}</p>
+        <p className="text-2xl font-bold text-huat-90">Draw date:</p>
+        <p className="text-lg text-huat-80">{date}</p>
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-huat-90">Your numbers:</p>
+        <p className="text-2xl font-bold text-huat-90">Your numbers:</p>
         {bets.map((bet, i) => (
-          <div>
+          <div className="leading-loose ml-10 flex self-start text-lg text-huat-80">
             <span>{i + 1}. {bet} </span>
-            <span className={`font-bold ${prizes[i] > 0 && 'text-green-500'}`}>
+            <span className={`ml-6 font-bold ${prizes[i] > 0 ? 'text-green-500' : 'text-stone-900'}`}>
               +${new Intl.NumberFormat('en-US').format(prizes[i])}
             </span>
           </div>
@@ -53,28 +52,27 @@ const ResultsOutput = ({
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-huat-90">Winning numbers:</p>
-        <p>{winningNumbers}</p>
+        <p className="text-2xl font-bold text-huat-90">Winning numbers:</p>
+        <p className="text-lg text-huat-80">{winningNumbers}</p>
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-huat-90">Additional number:</p>
-        <p>{additionalNumber}</p>
+        <p className="text-2xl font-bold text-huat-90">Additional number:</p>
+        <p className="text-lg text-huat-80">{additionalNumber}</p>
       </div>
 
-      <div className="mb-4 font-bold text-xl">
+      <div className="mb-4 font-bold text-2xl">
         <p className="text-huat-90">Prize:</p>
-        <p>{totalPrize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(totalPrize)}!` : 'You did not win anything'}</p>
+        <p className={`ml-6 font-bold ${totalPrize > 0 ? 'text-green-500' : 'text-stone-900'}`}>{totalPrize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(totalPrize)}!` : 'You did not win anything'}</p>
       </div>
+      {auth && (
+      <div>
+        <button type="button" className="w-full mx-auto bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" onClick={handleSave} disabled={disableSave}>Save</button>
+        <p className="text-green-500 font-bold">{saveMsg}</p>
+      </div>
+      )}
     </div>
 
-    {auth && (
-    <>
-      <button type="button" className="w-1/4 bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-4 rounded disabled:opacity-50" onClick={handleSave} disabled={disableSave}>Save</button>
-      <p className="text-green-500 font-bold">{saveMsg}</p>
-    </>
-    )}
-  </>
   );
 };
 
