@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .palette {
   /* CSS HEX */
 --maximum-yellow-red: #fcc878ff;
@@ -62,9 +66,6 @@
   background-color: #fcdbc3ff;
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 body {
   margin: 0;
@@ -79,3 +80,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* input[type=file]::-webkit-file-upload-button,
+input[type=file]::file-selector-button {
+  @apply text-white bg-grey-7000 hover: bg-grey-600 font-medium text-sm cursor-pointer border-0 py-2.5 pl-8 p r-4;
+  margin-inline-start: -1rem;
+  margin-inline-end: 1rem;
+} */

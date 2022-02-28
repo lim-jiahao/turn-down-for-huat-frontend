@@ -31,14 +31,16 @@ const LandingPage = ({ auth }) => {
   return (
     <>
       {auth && <WinLoss />}
-      <TicketUpload setDisableSave={setDisableSave} setSaveMsg={setSaveMsg} />
-      <ResultsOutput
-        auth={auth}
-        disableSave={disableSave}
-        saveMsg={saveMsg}
-        setDisableSave={setDisableSave}
-        setSaveMsg={setSaveMsg}
-      />
+      <div className="w-10/12 border-double border-4 border-huat-10 bg-huat-30 p-12 flex flex-column justify-around items-center">
+        <TicketUpload setDisableSave={setDisableSave} setSaveMsg={setSaveMsg} />
+        <ResultsOutput
+          auth={auth}
+          disableSave={disableSave}
+          saveMsg={saveMsg}
+          setDisableSave={setDisableSave}
+          setSaveMsg={setSaveMsg}
+        />
+      </div>
     </>
   );
 };

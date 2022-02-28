@@ -34,14 +34,14 @@ const ResultsOutput = ({
 
   return bets.length > 0 && (
   <>
-    <div className="flex flex-col items-center text-center">
+    <div className="mt-4 w-2/5 flex flex-col items-center text-center">
       <div className="mb-4">
-        <p className="text-xl font-bold text-sky-400">Draw date:</p>
+        <p className="text-xl font-bold text-huat-90">Draw date:</p>
         <p>{date}</p>
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-sky-400">Your numbers:</p>
+        <p className="text-xl font-bold text-huat-90">Your numbers:</p>
         {bets.map((bet, i) => (
           <div>
             <span>{i + 1}. {bet} </span>
@@ -53,17 +53,17 @@ const ResultsOutput = ({
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-sky-400">Winning numbers:</p>
+        <p className="text-xl font-bold text-huat-90">Winning numbers:</p>
         <p>{winningNumbers}</p>
       </div>
 
       <div className="mb-4">
-        <p className="text-xl font-bold text-sky-400">Additional number:</p>
+        <p className="text-xl font-bold text-huat-90">Additional number:</p>
         <p>{additionalNumber}</p>
       </div>
 
       <div className="mb-4 font-bold text-xl">
-        <p className="text-sky-400">Prize:</p>
+        <p className="text-huat-90">Prize:</p>
         <p>{totalPrize > 0 ? `You won $${new Intl.NumberFormat('en-US').format(totalPrize)}!` : 'You did not win anything'}</p>
       </div>
     </div>

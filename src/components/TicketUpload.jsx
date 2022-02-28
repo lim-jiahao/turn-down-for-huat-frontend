@@ -58,17 +58,15 @@ const TicketUpload = ({ setDisableSave, setSaveMsg }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="w-3/4 m-auto flex flex-col items-center">
-        <span className="block text-indigo-500">Upload ticket:</span>
-
+    <form className="w-2/5" onSubmit={handleSubmit}>
+      <div className="w-3/5 m-auto flex flex-col items-center">
         <ImageInput
           setErrMsg={setErrMsg}
           setDisableSubmit={setDisableSubmit}
           inputRef={fileInputRef}
         />
 
-        <button className="w-36 mx-auto bg-indigo-700 hover:bg-pink-700 disabled:opacity-50 mt-4 text-white font-bold py-2 px-4 rounded-full" type="submit" value="Upload" disabled={disableSubmit}>Upload</button>
+        <button className="w-36 mx-auto bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" type="submit" value="Upload" disabled={disableSubmit}>Upload</button>
         <span className="text-red-500 font-bold">{errMsg}</span>
       </div>
     </form>

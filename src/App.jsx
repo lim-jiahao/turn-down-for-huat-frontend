@@ -41,7 +41,7 @@ const App = () => {
   return (
     <div className="w-screen h-screen flex flex-col items-center bg-huat-40">
       <Router>
-        <div className="w-full mb-6 p-10 border-2 bg-gradient-to-br from-huat-30 to-huat-70 via huat-60 animate-gradient-xy">
+        <div className="w-full mb-6 p-10 bg-gradient-to-br from-huat-30 to-huat-70 via huat-60 animate-gradient-xy">
           <nav className="flex justify-evenly text-huat-90 text-xl">
             <NavLink className={({ isActive }) => `${isActive && 'font-bold'} hover:underline`} to="/">Home</NavLink>
             <h2 className="text-4xl">Turn Down For HUAT</h2>
