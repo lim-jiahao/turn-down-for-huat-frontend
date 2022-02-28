@@ -43,7 +43,7 @@ const Signup = ({ setAuth }) => {
   };
 
   return (
-    <div className="max-w-md w-full m-auto bg-huat-50 rounded p-5">
+    <div className="max-w-md w-full bg-huat-50 rounded p-5">
       <form onSubmit={handleSignup}>
         <div>
           <label className="block mb-2 text-lg text-huat-90" htmlFor="name">
