@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { TotoContext, setFileAction } from '../store.jsx';
+import { TotoContext, setFileAction, resetStateAction } from '../store.jsx';
 
 const ImageInput = ({ setErrMsg, setDisableSubmit, inputRef }) => {
   const { store, dispatch } = useContext(TotoContext);
@@ -11,6 +11,8 @@ const ImageInput = ({ setErrMsg, setDisableSubmit, inputRef }) => {
 
   const handleFileChange = (e) => {
     const curFile = e.target.files[0];
+
+    dispatch(resetStateAction());
 
     if (!curFile) {
       setErrMsg('');
