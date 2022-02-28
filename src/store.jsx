@@ -9,6 +9,7 @@ const SET_TOTAL_PRIZE = 'SET_TOTAL_PRIZE';
 const SET_FILE = 'SET_FILE';
 const SET_FILE_NAME = 'SET_FILE_NAME';
 const SET_DATE = 'SET_DATE';
+const RESET_STATE = 'RESET_STATE';
 
 export const initialState = {
   bets: [],
@@ -42,6 +43,8 @@ export const totoReducer = (state, action) => {
       return { ...state, filename: action.payload.filename };
     case SET_DATE:
       return { ...state, date: action.payload.date };
+    case RESET_STATE:
+      return { ...initialState, winLoss: state.winLoss };
     default:
       return state;
   }
@@ -91,6 +94,8 @@ export const setDateAction = (date) => ({
   type: SET_DATE,
   payload: { date },
 });
+
+export const resetStateAction = () => ({ type: RESET_STATE });
 
 export const TotoContext = React.createContext(null);
 const { Provider } = TotoContext;
