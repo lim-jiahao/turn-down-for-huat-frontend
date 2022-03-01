@@ -57,7 +57,7 @@ const Signup = ({ setAuth }) => {
             Email
             <input className="w-full p-2 mb-2 text-huat-40 border-b-4 border-huat-70 outline-none focus:bg-gray-300" type="email" name="email" value={email} onChange={handleEmailChange} required />
           </label>
-          <p className="text-sm text-red-500 font-bold mb-4">{message}</p>
+          <p className="text-sm text-huat-10 font-bold mb-4">{message}</p>
         </div>
 
         <div>

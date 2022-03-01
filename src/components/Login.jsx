@@ -56,7 +56,7 @@ const Login = ({ setAuth }) => {
           </label>
         </div>
 
-        <p className="text-md text-stone-900 font-bold mb-4">{message}</p>
+        <p className="text-md text-huat-10 font-bold mb-4">{message}</p>
 
         <div>
           <input className="w-full mx-auto mb-4 bg-huat-50 border-2 border-huat-10 hover:bg-huat-80 disabled:opacity-50 disabled:bg-huat-40 mt-4 text-huat-90 font-bold py-2 px-4 rounded-full" type="submit" value="Log In" />
