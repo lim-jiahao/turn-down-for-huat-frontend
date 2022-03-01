@@ -2,7 +2,9 @@ import React, {
   useState, useEffect, useContext,
 } from 'react';
 import axios from 'axios';
-import { setWinLossAction, TotoContext, BACKEND_URL } from '../store.jsx';
+import {
+  setWinLossAction, TotoContext, BACKEND_URL, resetStateAction,
+} from '../store.jsx';
 import WinLoss from './WinLoss.jsx';
 import TicketUpload from './TicketUpload.jsx';
 import ResultsOutput from './ResultsOutput.jsx';
@@ -26,6 +28,8 @@ const LandingPage = ({ auth }) => {
         }
       })();
     }
+
+    return () => dispatch(resetStateAction());
   }, [auth]);
 
   return (
