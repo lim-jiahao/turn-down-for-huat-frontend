@@ -7,7 +7,7 @@ const WinLoss = () => {
 
   return (
     <div className="mb-3 p-5">
-      <span className="text-2xl text-huat-90">Your net win/loss is:</span>
+      <span className="text-2xl text-huat-40 font-bold">Your net win/loss is:</span>
       {' '}
       <span className={winLoss > 0 ? 'text-green-500 font-bold text-6xl' : 'text-red-500 font-bold text-6xl'}>
         {winLoss >= 0 ? '$' : '-$'}

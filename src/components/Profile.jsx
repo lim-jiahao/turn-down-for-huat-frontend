@@ -50,12 +50,12 @@ const Profile = ({ setAuth }) => {
   return (
     <>
       <div className="flex items-start">
-        <div className="text-huat-90 text-2xl mb-3 text-center mr-2">
+        <div className="text-huat-40 text-3xl font-bold mb-3 text-center mr-6">
           <div className="mb-1">
-            Logged in as
+            Logged in as:
             <div className="flex items-center justify-center">
-              <UserIcon className="h-5 w-5 mr-1 text-huat-10" />
-              <p className="font-bold text-lg text-huat-10">{curUser.name}</p>
+              <UserIcon className="h-5 w-5 mt-2 mr-1 text-huat-30" />
+              <p className="font-bold mt-2 text-xl text-huat-30">{curUser.name}</p>
             </div>
           </div>
         </div>
