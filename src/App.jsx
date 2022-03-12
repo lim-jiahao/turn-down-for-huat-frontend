@@ -3,14 +3,11 @@ import {
   BrowserRouter as Router, Routes, Route, NavLink,
 } from 'react-router-dom';
 import axios from 'axios';
+import { BACKEND_URL } from './store.jsx';
 import LandingPage from './components/LandingPage.jsx';
 import Login from './components/Login.jsx';
 import Signup from './components/Signup.jsx';
 import Profile from './components/Profile.jsx';
-import Palette from './components/Palette.jsx';
-
-axios.defaults.withCredentials = true;
-const BACKEND_URL = 'http://localhost:3004';
 
 const App = () => {
   const [auth, setAuth] = useState(false);
@@ -58,7 +55,6 @@ const App = () => {
           <Route path="profile" element={auth ? <Profile setAuth={setAuth} /> : <LandingPage auth={auth} />} />
           <Route path="login" element={<Login setAuth={setAuth} />} />
           <Route path="signup" element={<Signup setAuth={setAuth} />} />
-          <Route path="palette" element={<Palette />} />
         </Routes>
       </Router>
     </div>
